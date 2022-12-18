@@ -1,7 +1,8 @@
 import axios from "axios";
 import { UnoActionCardType, UnoCardType, UnoNumberCardType, unoCardToPostBody } from "../card/cardAPI";
 import { isUnoActionCardLabel } from "../card/cardAPI";
-import { GameState } from "./gameSlice";
+
+const server = "http://144.202.8.64:8080"
 
 export interface GameStateResponseRaw {
   drawPileSize: number;
@@ -94,7 +95,7 @@ export async function skipTurn(playerId: string, roomId: string) {
     playerId,
   };
   const res = await axios.post(
-    '/api/skipTurn',
+    server + '/api/skipTurn',
     null,
     {params}
   )
@@ -109,7 +110,7 @@ export async function playCard(playerId: string, roomId: string, card : UnoCardT
   ...unoCardToPostBody(card)
  }
  const res = await axios.post(
-  '/api/playCard',
+  server + '/api/playCard',
   null,
   {
     params
@@ -121,7 +122,7 @@ export async function playCard(playerId: string, roomId: string, card : UnoCardT
 
 export async function getGameState(playerId: string, roomId: string) {
   const res = await axios.post(
-    '/api/getGameByRoomId',
+    server + '/api/getGameByRoomId',
     null,
     {
       params : {
@@ -136,7 +137,7 @@ export async function getGameState(playerId: string, roomId: string) {
 
 export async function createRoom(roomSize : number) {
   const res = await axios.post(
-    '/api/createRoom',
+    server + '/api/createRoom',
     null,
     {
       params: {
@@ -150,7 +151,7 @@ export async function createRoom(roomSize : number) {
 
 export async function joinRoom(roomId : string) {
   const res = await axios.post(
-    '/api/joinRoom',
+    server + '/api/joinRoom',
     null,
     {
       params: {
@@ -163,7 +164,7 @@ export async function joinRoom(roomId : string) {
 
 export async function getRoomById(roomId : string) {
   const res = await axios.get(
-    '/api/getRoomById',
+    server + '/api/getRoomById',
     {
       params: {
         roomId
@@ -176,7 +177,7 @@ export async function getRoomById(roomId : string) {
 
 export async function startGameByRoomId(roomId : string, playerId: string) {
   const res = await axios.post(
-    '/api/startGameByRoomId',
+    server + '/api/startGameByRoomId',
     null,
     {
       params : {
