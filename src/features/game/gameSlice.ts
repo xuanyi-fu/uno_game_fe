@@ -119,6 +119,21 @@ export const gameSlice = createSlice(
         state.room.roomId = action.payload.roomId;
         state.room.playerId = action.payload.playerId;
         state.room.status = 'joined';
+      },
+      reset : (state) => {
+        state.currentPlayer = '';
+        state.direction = 0;
+        state.discardPile = [];
+        state.drawPileSize = 0;
+        state.gameStatus = 'idle';
+        state.hands = [];
+        state.room.joinedCount = 0;
+        state.room.playerId = '';
+        state.room.roomId = '';
+        state.room.size = 0;
+        state.room.start = false;
+        state.room.status = 'idle';
+        state.winner = null;
       }
     },
     extraReducers: (builder) => {
@@ -255,7 +270,7 @@ export const gameSlice = createSlice(
   }
 )
 
-export const { setRoomIdAndPlayerId } = gameSlice.actions
+export const { setRoomIdAndPlayerId, reset } = gameSlice.actions
 
 export const selectGameState = (state : RootState) => state.game;
 
