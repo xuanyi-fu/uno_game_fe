@@ -2,7 +2,7 @@ import axios from "axios";
 import { UnoActionCardType, UnoCardType, UnoNumberCardType, unoCardToPostBody } from "../card/cardAPI";
 import { isUnoActionCardLabel } from "../card/cardAPI";
 
-const server = "http://144.202.8.64:8080"
+const server = "http://uno.xyfu.me:8080"
 
 export interface GameStateResponseRaw {
   drawPileSize: number;
