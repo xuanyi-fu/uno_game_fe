@@ -5,12 +5,13 @@ import { getGameState, createRoom, joinRoom, getRoomById, startGameByRoomId, pla
 import { Draft } from '@reduxjs/toolkit';
 
 export interface GameState {
-  gameStatus: 'idle' | 'loading' | 'failed';
+  gameStatus: 'idle' | 'loading' | 'finished';
   drawPileSize: number;
   discardPile: UnoCardType[];
   currentPlayer: string;
   direction: number;
   hands: UnoCardType[];
+  winner: string | null;
 
   room : {
     status: 'idle' | 'loading' | 'joined';
@@ -29,6 +30,7 @@ const initialState : GameState = {
   currentPlayer: "",
   direction: 0,
   hands: [],
+  winner: null, 
 
   room : {
     status: 'idle',
@@ -96,19 +98,29 @@ export const startGameByRoomIdAsync = createAsyncThunk(
 )
 
 function mergeGameState(state : Draft<GameState>, response : GameStateResponse) {
+  state.gameStatus = 'idle';
   state.currentPlayer = response.currentPlayer;
   state.direction = response.direction;
-  if (response.discardPile.length)
   state.discardPile = response.discardPile.reverse()
   state.hands = response.playerHands;
   state.room.playerId = response.playerId;
+  if(response.winner !== null) {
+    state.gameStatus = 'finished';
+    state.winner = response.winner;
+  }
 }
 
 export const gameSlice = createSlice(
   {
     name: 'game',
     initialState,
-    reducers: {},
+    reducers: {
+      setRoomIdAndPlayerId : (state, action : PayloadAction<{roomId: string, playerId: string}>) => {
+        state.room.roomId = action.payload.roomId;
+        state.room.playerId = action.payload.playerId;
+        state.room.status = 'joined';
+      }
+    },
     extraReducers: (builder) => {
       builder
         .addCase(
@@ -119,7 +131,6 @@ export const gameSlice = createSlice(
         .addCase(
           getGameStateAsync.fulfilled, (state, action) => {
             const response = action.payload;
-            state.gameStatus = 'idle'
             mergeGameState(state, response)
           }
         )
@@ -180,6 +191,7 @@ export const gameSlice = createSlice(
             state.room.roomId = response.roomId;
             state.room.joinedCount = response.players.length
             state.room.size = response.roomSize
+            state.room.start = response.gameStart
           }
         )
         .addCase(
@@ -214,7 +226,6 @@ export const gameSlice = createSlice(
         .addCase(
           playCardAsync.fulfilled, (state, action) => {
             const response = action.payload;
-            state.gameStatus = 'idle';
             mergeGameState(state, response)
           }
         )
@@ -232,7 +243,6 @@ export const gameSlice = createSlice(
         .addCase(
           skipTurnAsync.fulfilled, (state, action) => {
             const response = action.payload;
-            state.gameStatus = 'idle';
             mergeGameState(state, response)
           }
         )
@@ -244,6 +254,8 @@ export const gameSlice = createSlice(
     }
   }
 )
+
+export const { setRoomIdAndPlayerId } = gameSlice.actions
 
 export const selectGameState = (state : RootState) => state.game;
 

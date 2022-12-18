@@ -10,6 +10,7 @@ export interface GameStateResponseRaw {
   playerId: string;
   direction: number;
   player_hands: any[];
+  winner: string | null;
 }
 
 export interface GameStateResponse {
@@ -19,6 +20,7 @@ export interface GameStateResponse {
   playerId: string;
   direction: number;
   playerHands: UnoCardType[];
+  winner: string | null;
 }
 
 export interface RoomInfoResponse {
@@ -72,7 +74,7 @@ function transformUnoCardsResponse(unoCards : any[]) : UnoCardType[] {
   return unoCards.map(getUnoCard);
 }
 
-function transformGameStateResponseRawToGameStateResponse(resRaw : GameStateResponseRaw) {
+function transformGameStateResponseRawToGameStateResponse(resRaw : GameStateResponseRaw) : GameStateResponse{
   const playerHands = transformUnoCardsResponse(resRaw.player_hands);
   const discardPile = transformUnoCardsResponse(resRaw.discardPile);
   return {
@@ -81,8 +83,9 @@ function transformGameStateResponseRawToGameStateResponse(resRaw : GameStateResp
     currentPlayer: resRaw.currentPlayer,
     playerId: resRaw.playerId,
     direction: resRaw.direction,
-    playerHands
-  } as GameStateResponse;
+    playerHands,
+    winner: resRaw.winner
+  };
 }
 
 export async function skipTurn(playerId: string, roomId: string) {
