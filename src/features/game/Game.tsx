@@ -45,8 +45,10 @@ export default function Game() {
   const shouldOpen = forceOpen || open;
 
   const handleClose = () => {
-    setOpen(false);
-    setForceOpen(false);
+    if(gameState.room.start) {
+      setOpen(false);
+      setForceOpen(false);
+    }
   };
 
   return <>
@@ -75,14 +77,6 @@ export default function Game() {
       >
         <AppBar sx={{ position: 'relative' }}>
           <Toolbar>
-            {/* <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              ❌
-            </IconButton> */}
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Room
             </Typography>
@@ -105,11 +99,6 @@ export default function Game() {
             position: "relative"
           }}
         >
-          <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-        <Toolbar>
-          <Button color="inherit" onClick={() => {setForceOpen(true)}}>Join Room</Button>
-        </Toolbar>
-      </AppBar>
           <Box sx={{
             width: "95%",
             height: "100%",

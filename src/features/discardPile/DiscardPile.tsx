@@ -41,8 +41,7 @@ export function DiscardPile() {
     {
       gameState.discardPile.map( (card, index) => { return <span style={{
         position: "absolute",
-        left: (index * (cardWidth / 3)).toString() + "px",
-        zIndex: index
+        ...computePos(index),
       }}>
           <UnoCardStatic card = {card} width = {cardWidth}/>
         </span>})

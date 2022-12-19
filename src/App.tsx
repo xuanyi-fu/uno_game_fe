@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   return (
-    <div style={{overflow: "hidden", height: "100vh", width: "100vw"}}>
+    <div style={{overflow: "hidden"}}>
       <Game/>
     </div>
     
