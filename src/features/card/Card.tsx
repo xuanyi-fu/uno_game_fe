@@ -6,7 +6,7 @@ import { useGesture } from 'react-use-gesture'
 import styles from './Card.module.css'
 import { Popper, Box, Button, ButtonGroup, Paper} from '@mui/material';
 
-function unoCardColorConvert(color : UnoColorType) {
+export function unoCardColorConvert(color : UnoColorType) {
   switch (color) {
     case "blue": return "#5555ff";
     case "green": return "#55aa55";

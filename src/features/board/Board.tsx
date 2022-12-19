@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Hand } from '../hand/Hand';
-import { Button, ButtonGroup, CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from '@mui/material';
+import { Paper, Button, ButtonGroup, CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { DiscardPile } from '../discardPile/DiscardPile';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { skipTurnAsync, getGameStateAsync, selectGameState, reset} from '../game/gameSlice';
+import { skipTurnAsync, getGameStateAsync, selectGameState, reset } from '../game/gameSlice';
+import { UnoCardType } from '../card/cardAPI';
+import { unoCardColorConvert } from '../card/Card';
 
 export default function Table() {
   const gameState = useAppSelector(selectGameState);
   const dispatch = useAppDispatch();
+  const [bgColor, setBgColor] = useState(unoCardColorConvert('red'));
+
+  useEffect(() => {
+    const len = gameState.discardPile.length;
+    const lastCard : (UnoCardType | null) = len ? gameState.discardPile[len - 1] : null
+    setBgColor(unoCardColorConvert(lastCard === null ? 'red' : lastCard.color))
+  }, [gameState.discardPile])
 
   const [count, setCount] = useState(1);
   const [autoRefresh, setAutoRefresh] = useState(true);
@@ -30,7 +39,7 @@ export default function Table() {
   }, [shouldAutoRefresh]);
 
   useEffect(() => {
-    if(!!winner) {
+    if (!!winner) {
       setBackdropOpen(true);
     }
   }, [winner])
@@ -46,42 +55,61 @@ export default function Table() {
       height: "100%",
     }}
   >
-     <Dialog
-        open={winnerBackdropOpen}
-        onClose={handleBackdropClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {winner === gameState.room.playerId ? "YOU ARE THE WINNER" : "WINNER IS " + winner}
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
+    <Dialog
+      open={winnerBackdropOpen}
+      onClose={handleBackdropClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          {winner === gameState.room.playerId ? "YOU ARE THE WINNER" : "WINNER IS " + winner}
+        </DialogContentText>
+      </DialogContent>
+    </Dialog>
 
     <Box sx={{
       width: "100%",
       height: "50%",
-      backgroundColor: 'primary.main',
-      border: '2px black dashed',
+      backgroundColor: bgColor,
+      border: '2px black solid',
+      borderRadius: '10px',
       margin: '2px',
+      transition: 'background-color 500ms ease-out'
     }}>
-      <DiscardPile />
+      <Box sx={{
+        width: "100%",
+        height: "100%",
+        margin: "10px"
+      }}>
+        <Box>
+          <DiscardPile />
+        </Box>
+      </Box>
     </Box>
     <Box sx={{
       width: "100%",
-      height: "25%",
+      height: "30%",
       backgroundColor: 'primary.main',
-      border: '2px black dashed',
+      border: '2px black solid',
+      borderRadius: '10px',
       margin: '2px',
     }}>
-      <Hand />
+      <Box sx={{
+        width: "100%",
+        height: "100%",
+        margin: "10px",
+      }}>
+        <Hand />
+      </Box>
+      
     </Box>
     <Box sx={{
       width: "100%",
       height: "10%",
       backgroundColor: 'primary.main',
-      border: '2px white',
+      border: '2px black solid',
+      borderRadius: '10px',
       margin: '2px',
     }}>
       <ButtonGroup style={{ margin: '10px' }} size="large" variant="contained">
