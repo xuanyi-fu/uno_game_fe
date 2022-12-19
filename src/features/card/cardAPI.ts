@@ -6,7 +6,7 @@ export type UnoActionCardType = {
   color: UnoColorType;
 }
 
-export type UnoNumberCardType =  {
+export type UnoNumberCardType = {
   label: "number";
   number: UnoNumberType;
   color: UnoColorType;
@@ -14,7 +14,7 @@ export type UnoNumberCardType =  {
 
 export type UnoCardType = UnoActionCardType | UnoNumberCardType
 
-export function unoCardToPostBody(card : UnoCardType) {
+export function unoCardToPostBody(card: UnoCardType) {
   if ('number' in card) {
     return {
       name: card.label,
@@ -28,22 +28,22 @@ export function unoCardToPostBody(card : UnoCardType) {
       num: 0
     }
   }
-  
+
 }
 
-export const isUnoActionCardLabel = (label : string) => {
-  switch(label) {
+export const isUnoActionCardLabel = (label: string) => {
+  switch (label) {
     case "skip":
-    case "draw2" : 
-    case "draw4" : 
-    case "wild" : 
-    case "reverse" :
+    case "draw2":
+    case "draw4":
+    case "wild":
+    case "reverse":
       return true
     default:
-        return false;
+      return false;
   }
 }
 
-export const unoNumberCardSet = (color : UnoColorType) => [...Array(10).keys()].map( n => {
-  return {label : "number", color, number: n.toString()} as UnoNumberCardType
+export const unoNumberCardSet = (color: UnoColorType) => [...Array(10).keys()].map(n => {
+  return { label: "number", color, number: n.toString() } as UnoNumberCardType
 })

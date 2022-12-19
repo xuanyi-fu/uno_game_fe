@@ -15,7 +15,7 @@ export default function Table() {
 
   useEffect(() => {
     const len = gameState.discardPile.length;
-    const lastCard : (UnoCardType | null) = len ? gameState.discardPile[len - 1] : null
+    const lastCard: (UnoCardType | null) = len ? gameState.discardPile[len - 1] : null
     setBgColor(unoCardColorConvert(lastCard === null ? 'red' : lastCard.color))
   }, [gameState.discardPile])
 
@@ -102,7 +102,7 @@ export default function Table() {
       }}>
         <Hand />
       </Box>
-      
+
     </Box>
     <Box sx={{
       width: "100%",

@@ -32,50 +32,50 @@ export interface RoomInfoResponse {
 }
 
 export interface RoomResponse {
-  roomInfo : RoomInfoResponse
+  roomInfo: RoomInfoResponse
   playerId: string
 }
 
-function getUnoCardLabel(unoCard : any) {
+function getUnoCardLabel(unoCard: any) {
   return ((unoCard[0] as string).toLowerCase())
 }
 
-function getUnoCardColor(unoCard : any) {
+function getUnoCardColor(unoCard: any) {
   if (unoCard[1].length === 1) {
     return ((unoCard[1][0] as string)).toLowerCase()
   } else {
     return ((unoCard[1][0][0] as string)).toLowerCase()
   }
-  
+
 }
 
-function getUnoCardNumber(unoCard : any) {
+function getUnoCardNumber(unoCard: any) {
   return ((unoCard[1][1] as number)).toString()
 }
 
-function getUnoCard(unoCard : any) : UnoCardType {
+function getUnoCard(unoCard: any): UnoCardType {
   const label = getUnoCardLabel(unoCard);
   const color = getUnoCardColor(unoCard);
-  if(isUnoActionCardLabel(label)) {
+  if (isUnoActionCardLabel(label)) {
     return {
-      label : label,
+      label: label,
       color: color
     } as UnoActionCardType
   } else {
     const number = getUnoCardNumber(unoCard);
     return {
-      label : label,
+      label: label,
       color: color,
       number: number,
     } as UnoNumberCardType
   }
 }
 
-function transformUnoCardsResponse(unoCards : any[]) : UnoCardType[] {
+function transformUnoCardsResponse(unoCards: any[]): UnoCardType[] {
   return unoCards.map(getUnoCard);
 }
 
-function transformGameStateResponseRawToGameStateResponse(resRaw : GameStateResponseRaw) : GameStateResponse{
+function transformGameStateResponseRawToGameStateResponse(resRaw: GameStateResponseRaw): GameStateResponse {
   const playerHands = transformUnoCardsResponse(resRaw.player_hands);
   const discardPile = transformUnoCardsResponse(resRaw.discardPile);
   return {
@@ -97,27 +97,27 @@ export async function skipTurn(playerId: string, roomId: string) {
   const res = await axios.post(
     server + '/api/skipTurn',
     null,
-    {params}
+    { params }
   )
 
   return transformGameStateResponseRawToGameStateResponse(res.data)
 }
 
-export async function playCard(playerId: string, roomId: string, card : UnoCardType) {
- const params = {
-  roomId,
-  playerId,
-  ...unoCardToPostBody(card)
- }
- const res = await axios.post(
-  server + '/api/playCard',
-  null,
-  {
-    params
+export async function playCard(playerId: string, roomId: string, card: UnoCardType) {
+  const params = {
+    roomId,
+    playerId,
+    ...unoCardToPostBody(card)
   }
- )
+  const res = await axios.post(
+    server + '/api/playCard',
+    null,
+    {
+      params
+    }
+  )
 
- return transformGameStateResponseRawToGameStateResponse(res.data)
+  return transformGameStateResponseRawToGameStateResponse(res.data)
 }
 
 export async function getGameState(playerId: string, roomId: string) {
@@ -125,7 +125,7 @@ export async function getGameState(playerId: string, roomId: string) {
     server + '/api/getGameByRoomId',
     null,
     {
-      params : {
+      params: {
         roomId,
         playerId,
       }
@@ -135,7 +135,7 @@ export async function getGameState(playerId: string, roomId: string) {
   return transformGameStateResponseRawToGameStateResponse(resRaw);
 }
 
-export async function createRoom(roomSize : number) {
+export async function createRoom(roomSize: number) {
   const res = await axios.post(
     server + '/api/createRoom',
     null,
@@ -145,11 +145,11 @@ export async function createRoom(roomSize : number) {
       }
     }
   )
-  
+
   return res.data as RoomResponse
 }
 
-export async function joinRoom(roomId : string) {
+export async function joinRoom(roomId: string) {
   const res = await axios.post(
     server + '/api/joinRoom',
     null,
@@ -162,7 +162,7 @@ export async function joinRoom(roomId : string) {
   return res.data as RoomResponse
 }
 
-export async function getRoomById(roomId : string) {
+export async function getRoomById(roomId: string) {
   const res = await axios.get(
     server + '/api/getRoomById',
     {
@@ -175,12 +175,12 @@ export async function getRoomById(roomId : string) {
   return res.data as RoomInfoResponse
 }
 
-export async function startGameByRoomId(roomId : string, playerId: string) {
+export async function startGameByRoomId(roomId: string, playerId: string) {
   const res = await axios.post(
     server + '/api/startGameByRoomId',
     null,
     {
-      params : {
+      params: {
         roomId,
         playerId
       }

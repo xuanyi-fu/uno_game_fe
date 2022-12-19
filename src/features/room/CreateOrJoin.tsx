@@ -13,46 +13,46 @@ export default function CreateOrJoin() {
   const gameState = useAppSelector(selectGameState);
   const dispatch = useAppDispatch();
 
-    return <Box sx={{width: "100%", height: "100%"}}>
-      <Stack sx={{width: "100%", height: "100%"}} spacing={2}>
-        <TextField
-          variant="standard"
-          label="Room Size"
-          defaultValue={"2"}
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-          onChange={(event) => {
-            setInputNumPlayers(parseInt(event.target.value))
-          }} />
-        <Button variant='contained' onClick={() => {
-          dispatch(createRoomAsync(inputNumPlayers))
-        }}>
-          Create
-        </Button>
-        <TextField
-          variant="standard"
-          label="Room ID"
-          required
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-          onChange={(event) => {
-            setInputRoomId(event.target.value)
-          }} />
-        <TextField
-          variant="standard"
-          label="Player ID"
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-          onChange={(event) => {
-            setInputPlayerId(event.target.value)
-          }} />
-        <Button variant='contained' onClick={() => {
-          if(inputPlayerId !== '' && inputRoomId !== '') {
-            dispatch(setRoomIdAndPlayerId({roomId: inputRoomId, playerId: inputPlayerId}));
-            dispatch(getRoomByIdAsync(gameState.room.roomId))
-          } else if (inputRoomId !== '') {
-            dispatch(joinRoomAsync(inputRoomId));
-          }
-        }}>
-          Join
-        </Button>
-      </Stack>
-    </Box>
+  return <Box sx={{ width: "100%", height: "100%" }}>
+    <Stack sx={{ width: "100%", height: "100%" }} spacing={2}>
+      <TextField
+        variant="standard"
+        label="Room Size"
+        defaultValue={"2"}
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        onChange={(event) => {
+          setInputNumPlayers(parseInt(event.target.value))
+        }} />
+      <Button variant='contained' onClick={() => {
+        dispatch(createRoomAsync(inputNumPlayers))
+      }}>
+        Create
+      </Button>
+      <TextField
+        variant="standard"
+        label="Room ID"
+        required
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        onChange={(event) => {
+          setInputRoomId(event.target.value)
+        }} />
+      <TextField
+        variant="standard"
+        label="Player ID"
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        onChange={(event) => {
+          setInputPlayerId(event.target.value)
+        }} />
+      <Button variant='contained' onClick={() => {
+        if (inputPlayerId !== '' && inputRoomId !== '') {
+          dispatch(setRoomIdAndPlayerId({ roomId: inputRoomId, playerId: inputPlayerId }));
+          dispatch(getRoomByIdAsync(gameState.room.roomId))
+        } else if (inputRoomId !== '') {
+          dispatch(joinRoomAsync(inputRoomId));
+        }
+      }}>
+        Join
+      </Button>
+    </Stack>
+  </Box>
 }

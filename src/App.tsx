@@ -4,10 +4,10 @@ import './App.css';
 
 function App() {
   return (
-    <div style={{overflow: "hidden"}}>
-      <Game/>
+    <div style={{ overflow: "hidden" }}>
+      <Game />
     </div>
-    
+
   );
 }
 

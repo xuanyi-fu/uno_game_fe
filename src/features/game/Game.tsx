@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Room } from '../room/Room';
 import Board from '../board/Board';
-import { Box, Dialog, Slide, AppBar, Toolbar, IconButton, Typography, Button} from '@mui/material';
+import { Box, Dialog, Slide, AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { TransitionProps } from '@mui/material/transitions';
 import { useAppSelector } from '../../app/hooks';
@@ -33,19 +33,19 @@ export default function Game() {
   const [forceOpen, setForceOpen] = React.useState(false);
 
   useEffect(() => {
-    if(!gameState.room.start) {
+    if (!gameState.room.start) {
       setOpen(true);
     } else {
       setOpen(false);
       setForceOpen(false);
     }
-  }, 
-  [gameState.room.status]);
+  },
+    [gameState.room.status]);
 
   const shouldOpen = forceOpen || open;
 
   const handleClose = () => {
-    if(gameState.room.start) {
+    if (gameState.room.start) {
       setOpen(false);
       setForceOpen(false);
     }
@@ -69,7 +69,7 @@ export default function Game() {
       </div>
     </BrowserView>
     <MobileView>
-    <Dialog
+      <Dialog
         fullWidth
         open={shouldOpen}
         onClose={handleClose}
@@ -86,9 +86,9 @@ export default function Game() {
           width: "95%",
           margin: "2%"
         }}>
-          <Room/>
+          <Room />
         </Box>
-        
+
       </Dialog>
       <div style={{ height: "100vh" }}>
         <Box

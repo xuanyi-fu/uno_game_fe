@@ -9,11 +9,11 @@ import CreateOrJoin from './CreateOrJoin';
 export function Room() {
   const gameState = useAppSelector(selectGameState);
   switch (gameState.room.status) {
-    case 'idle': 
-      return <CreateOrJoin/>
+    case 'idle':
+      return <CreateOrJoin />
     case 'loading':
     case 'joined':
-      return <JoinedRoom/>
+      return <JoinedRoom />
     default:
       return <Box></Box>
   }

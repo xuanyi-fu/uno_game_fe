@@ -14,7 +14,7 @@ export function Hand() {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    if(wrapperRef.current) {
+    if (wrapperRef.current) {
       setHeight(wrapperRef.current.offsetHeight);
       setWidth(wrapperRef.current.offsetWidth)
     }
@@ -27,33 +27,37 @@ export function Hand() {
   const overlapHeight = Math.floor((height - cardHeight) / (maxCardEachCol));
   const maxCardEachRow = Math.max(1, Math.floor((width - cardWidth) / overlapWidth) - 1);
 
-  const computePos = (index : number) => {
+  const computePos = (index: number) => {
     return {
       left: (index % maxCardEachRow) * overlapWidth,
       top: Math.floor(index / maxCardEachRow) * overlapHeight,
       zIndex: index
     }
   }
-  
+
   return <div style={
-    { height: "100%",
+    {
+      height: "100%",
       width: "100%",
-      position: "relative"}
+      position: "relative"
+    }
   } ref={wrapperRef}>
     {
-      gameState.hands.map( (card, index) => { return <span style={{
-        position: "absolute",
-        ...computePos(index)
-      }}>
-          <UnoCard card = {card} width = "100px" onClick={(card : UnoCardType, selectedColor : UnoColorType | null) => {
+      gameState.hands.map((card, index) => {
+        return <span style={{
+          position: "absolute",
+          ...computePos(index)
+        }}>
+          <UnoCard card={card} width="100px" onClick={(card: UnoCardType, selectedColor: UnoColorType | null) => {
             if (gameState.currentPlayer == gameState.room.playerId) {
               if (selectedColor !== null) {
-                card = {...card, color : selectedColor}
+                card = { ...card, color: selectedColor }
               }
-              dispatch(playCardAsync({playerId: gameState.room.playerId, roomId: gameState.room.roomId, card}))
+              dispatch(playCardAsync({ playerId: gameState.room.playerId, roomId: gameState.room.roomId, card }))
             }
-          }}/>
-        </span>})
+          }} />
+        </span>
+      })
     }
   </div>
 }

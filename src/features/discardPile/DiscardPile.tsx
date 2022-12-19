@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, useLayoutEffect }from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { selectGameState } from '../game/gameSlice';
 import { UnoCard, UnoCardStatic } from '../card/Card';
@@ -10,9 +10,9 @@ export function DiscardPile() {
   const [width, setWidth] = useState(0);
 
   const gameState = useAppSelector(selectGameState);
-  
+
   useEffect(() => {
-    if(wrapperRef.current) {
+    if (wrapperRef.current) {
       setHeight(wrapperRef.current.offsetHeight);
       setWidth(wrapperRef.current.offsetWidth)
     }
@@ -25,7 +25,7 @@ export function DiscardPile() {
   const overlapHeight = Math.floor((height - cardHeight) / (maxCardEachCol));
   const maxCardEachRow = Math.floor((width - cardWidth) / overlapWidth);
 
-  const computePos = (index : number) => {
+  const computePos = (index: number) => {
     return {
       left: (index % maxCardEachRow) * overlapWidth,
       top: -Math.floor(index / maxCardEachRow) * overlapHeight,
@@ -34,17 +34,21 @@ export function DiscardPile() {
   }
 
   return <div style={
-    { height: "100%",
+    {
+      height: "100%",
       width: "100%",
-      position: "relative"}
+      position: "relative"
+    }
   } ref={wrapperRef}>
     {
-      gameState.discardPile.map( (card, index) => { return <span style={{
-        position: "absolute",
-        ...computePos(index),
-      }}>
-          <UnoCardStatic card = {card} width = {cardWidth}/>
-        </span>})
+      gameState.discardPile.map((card, index) => {
+        return <span style={{
+          position: "absolute",
+          ...computePos(index),
+        }}>
+          <UnoCardStatic card={card} width={cardWidth} />
+        </span>
+      })
     }
   </div>
 }

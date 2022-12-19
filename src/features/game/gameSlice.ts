@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import { UnoCardType } from '../card/cardAPI';
-import { getGameState, createRoom, joinRoom, getRoomById, startGameByRoomId, playCard, GameStateResponse, skipTurn} from './gameAPI';
+import { getGameState, createRoom, joinRoom, getRoomById, startGameByRoomId, playCard, GameStateResponse, skipTurn } from './gameAPI';
 import { Draft } from '@reduxjs/toolkit';
 
 export interface GameState {
@@ -13,7 +13,7 @@ export interface GameState {
   hands: UnoCardType[];
   winner: string | null;
 
-  room : {
+  room: {
     status: 'idle' | 'loading' | 'joined';
     playerId: string;
     roomId: string;
@@ -23,16 +23,16 @@ export interface GameState {
   }
 }
 
-const initialState : GameState = {
+const initialState: GameState = {
   gameStatus: 'idle',
   drawPileSize: 0,
   discardPile: [],
   currentPlayer: "",
   direction: 0,
   hands: [],
-  winner: null, 
+  winner: null,
 
-  room : {
+  room: {
     status: 'idle',
     playerId: "",
     roomId: "",
@@ -44,7 +44,7 @@ const initialState : GameState = {
 
 export const skipTurnAsync = createAsyncThunk(
   'game/SkipTurn',
-  async (params : {playerId: string, roomId: string}) => {
+  async (params: { playerId: string, roomId: string }) => {
     const response = await skipTurn(params.playerId, params.roomId);
     return response;
   }
@@ -52,7 +52,7 @@ export const skipTurnAsync = createAsyncThunk(
 
 export const playCardAsync = createAsyncThunk(
   'game/playCard',
-  async (params : {playerId: string, roomId: string, card : UnoCardType}) => {
+  async (params: { playerId: string, roomId: string, card: UnoCardType }) => {
     const response = await playCard(params.playerId, params.roomId, params.card);
     return response;
   }
@@ -60,7 +60,7 @@ export const playCardAsync = createAsyncThunk(
 
 export const getGameStateAsync = createAsyncThunk(
   'game/getGameState',
-  async (params: {playerId: string, roomId: string}) => {
+  async (params: { playerId: string, roomId: string }) => {
     const response = await getGameState(params.playerId, params.roomId);
     return response;
   }
@@ -68,7 +68,7 @@ export const getGameStateAsync = createAsyncThunk(
 
 export const createRoomAsync = createAsyncThunk(
   'game/createRoom',
-  async (roomSize : number) => {
+  async (roomSize: number) => {
     const response = await createRoom(roomSize)
     return response;
   }
@@ -76,7 +76,7 @@ export const createRoomAsync = createAsyncThunk(
 
 export const joinRoomAsync = createAsyncThunk(
   'game/joinRoom',
-  async (roomId : string) => {
+  async (roomId: string) => {
     const response = await joinRoom(roomId);
     return response;
   }
@@ -84,7 +84,7 @@ export const joinRoomAsync = createAsyncThunk(
 
 export const getRoomByIdAsync = createAsyncThunk(
   'game/getRoomById',
-  async (roomId : string) => {
+  async (roomId: string) => {
     const response = await getRoomById(roomId);
     return response;
   }
@@ -92,19 +92,19 @@ export const getRoomByIdAsync = createAsyncThunk(
 
 export const startGameByRoomIdAsync = createAsyncThunk(
   'game/startGameByRoomId',
-  async (params : {roomId : string, playerId : string}) => {
+  async (params: { roomId: string, playerId: string }) => {
     const response = await startGameByRoomId(params.roomId, params.playerId);
   }
 )
 
-function mergeGameState(state : Draft<GameState>, response : GameStateResponse) {
+function mergeGameState(state: Draft<GameState>, response: GameStateResponse) {
   state.gameStatus = 'idle';
   state.currentPlayer = response.currentPlayer;
   state.direction = response.direction;
   state.discardPile = response.discardPile.reverse()
   state.hands = response.playerHands;
   state.room.playerId = response.playerId;
-  if(response.winner !== null) {
+  if (response.winner !== null) {
     state.gameStatus = 'finished';
     state.winner = response.winner;
   }
@@ -115,12 +115,12 @@ export const gameSlice = createSlice(
     name: 'game',
     initialState,
     reducers: {
-      setRoomIdAndPlayerId : (state, action : PayloadAction<{roomId: string, playerId: string}>) => {
+      setRoomIdAndPlayerId: (state, action: PayloadAction<{ roomId: string, playerId: string }>) => {
         state.room.roomId = action.payload.roomId;
         state.room.playerId = action.payload.playerId;
         state.room.status = 'joined';
       },
-      reset : (state) => {
+      reset: (state) => {
         state.currentPlayer = '';
         state.direction = 0;
         state.discardPile = [];
@@ -211,7 +211,7 @@ export const gameSlice = createSlice(
         )
         .addCase(
           getRoomByIdAsync.rejected, (state) => {
-            
+
           }
         )
 
@@ -272,6 +272,6 @@ export const gameSlice = createSlice(
 
 export const { setRoomIdAndPlayerId, reset } = gameSlice.actions
 
-export const selectGameState = (state : RootState) => state.game;
+export const selectGameState = (state: RootState) => state.game;
 
 export default gameSlice.reducer;
