@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { playCardAsync, selectGameState } from '../game/gameSlice';
 import { UnoCardType, UnoColorType } from '../card/cardAPI';
 import { unoNumberCardSet } from '../card/cardAPI';
+import { isMobile } from 'react-device-detect';
 
 export function Hand() {
   const gameState = useAppSelector(selectGameState);
@@ -21,10 +22,10 @@ export function Hand() {
 
   const cardWidth = width / 8;
   const cardHeight = cardWidth * 1.5;
-  const overlapWidth = cardWidth / 2;
+  const overlapWidth = isMobile ? cardWidth / 1.5 : cardWidth / 2;
   const maxCardEachCol = 3;
   const overlapHeight = Math.floor((height - cardHeight) / (maxCardEachCol));
-  const maxCardEachRow = Math.floor((width - cardWidth) / overlapWidth);
+  const maxCardEachRow = Math.max(1, Math.floor((width - cardWidth) / overlapWidth) - 1);
 
   const computePos = (index : number) => {
     return {

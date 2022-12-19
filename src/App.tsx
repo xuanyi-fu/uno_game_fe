@@ -4,7 +4,10 @@ import './App.css';
 
 function App() {
   return (
-    <Game/>
+    <div style={{overflow: "hidden", height: "100vh", width: "100vw"}}>
+      <Game/>
+    </div>
+    
   );
 }
 

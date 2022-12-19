@@ -13,8 +13,8 @@ export default function CreateOrJoin() {
   const gameState = useAppSelector(selectGameState);
   const dispatch = useAppDispatch();
 
-    return <Box>
-      <Stack spacing={2}>
+    return <Box sx={{width: "100%", height: "100%"}}>
+      <Stack sx={{width: "100%", height: "100%"}} spacing={2}>
         <TextField
           variant="standard"
           label="Room Size"
